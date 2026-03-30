@@ -89,12 +89,10 @@ npx expo start
 
 ## Observações:
 - Banco local: dados persistem apenas no dispositivo.
-- Senhas armazenadas em texto puro (não seguro para produção).
 
 ---
 
 ## Melhorias Futuras:
-- Hash de senha e autenticação segura.
 - Validação com JWT.
 - Integração com API externa.
 
