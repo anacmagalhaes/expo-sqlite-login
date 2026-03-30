@@ -4,6 +4,7 @@ import { useUsersDatabase } from "@/database/useUsersDatabase";
 import { Link, router } from "expo-router";
 import { useState } from "react";
 import { Alert, Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import bcrypt from "react-native-bcrypt";
 
 export default function Index() {
   const [email, setEmail] = useState("");
@@ -22,9 +23,11 @@ export default function Index() {
       if(!response){
         return Alert.alert("Erro!", "Usuário não encontrado")
       } 
+      
+      const passValid = bcrypt.compareSync(password, response.password)
 
-      if(response.password != password){
-       return Alert.alert("Atenção!", "A senha não corresponde.")
+      if(!passValid) {
+        return Alert.alert("Atenção!", "A senha não corresponde.")
       }
       
       router.push("/home")

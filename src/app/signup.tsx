@@ -4,6 +4,7 @@ import { useUsersDatabase } from "@/database/useUsersDatabase";
 import { Link } from "expo-router";
 import { useState } from "react";
 import { Alert, Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import bcrypt from "react-native-bcrypt";
 
 export default function SignUp() {
     const [id, setId] = useState("");
@@ -21,11 +22,17 @@ export default function SignUp() {
             } else if (confirmPass.trim() != password.trim()) {
                 return Alert.alert("Atenção!", "A senha não confere.")
             }
+            const pass = password;
+            const salt = 10;
+            const hashPass = bcrypt.hashSync(pass, salt);
 
-            const response = await usersDatabase.create({ name, email, password })
+            const response = await usersDatabase.create({ name, email, password: hashPass })
+            console.log(hashPass)
+            
             Alert.alert("Cadastrar", "Usuário cadastrado com sucesso!")
         } catch (error) {
             console.log(error)
+            Alert.alert("Atenção!", "Erro ao cadastar!")
         }
     }
 
